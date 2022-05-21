@@ -11,15 +11,16 @@ contract ParcelSure {
         uint256 productId;
         address payable insurer;
         uint256 dailyDelayPayout;
-        uint256 failurePayout;
         uint256 availCapital;
-        uint256 premium;
+        uint128 premium;
+        uint128 maxDelayDays;
     }
 
     struct Policy {
         uint256 policyId;
         uint256 productId;
         uint256 packageId;
+        uint256 dateCreated;
     }
 
     uint256 public productId = 0;
