@@ -5,7 +5,7 @@ pragma solidity ^0.8.7;
 // import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 import "hardhat/console.sol";
 
-contract ParcelSure{
+contract ParcelSure {
 
     struct Product {
         uint256 productId;
@@ -14,6 +14,12 @@ contract ParcelSure{
         uint256 failurePayout;
         uint256 availCapital;
         uint256 premium;
+    }
+
+    struct Policy {
+        uint256 policyId;
+        uint256 productId;
+        uint256 packageId;
     }
 
 }
