@@ -12,7 +12,7 @@ contract Parcelsure {
         address insurer;
         uint256 dailyDelayPayout;
         uint256 availCapital;
-        uint128 premium;
+        uint128 premiumPercentage;
         uint128 maxDelayDays;
     }
 
@@ -21,6 +21,7 @@ contract Parcelsure {
         uint256 productId;
         uint256 packageId;
         uint256 dateCreated;
+        uint256 value;
     }
 
     uint256 public productId = 0;
@@ -28,12 +29,12 @@ contract Parcelsure {
     mapping(uint256 => Product) public products;
     mapping(uint256 => Policy) public policies;
 
-    function createProduct(uint256 dailyDelayPayout, uint128 premium, uint128 maxDelayDays) public payable {
+    function createProduct(uint256 dailyDelayPayout, uint128 premiumPercentage, uint128 maxDelayDays) public payable {
         require(
             msg.value > (dailyDelayPayout * maxDelayDays), 
             "Not enough capital provided to insure a policy"
         );
-        require(premium > 0);
+        require(premiumPercentage > 0);
         require(maxDelayDays > 0 && maxDelayDays < 365);
 
         Product memory product = Product({
@@ -41,7 +42,7 @@ contract Parcelsure {
             insurer: msg.sender,
             dailyDelayPayout: dailyDelayPayout,
             availCapital: msg.value,
-            premium: premium,
+            premiumPercentage: premiumPercentage,
             maxDelayDays: maxDelayDays
         });
         products[productId] = product;
