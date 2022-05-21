@@ -30,10 +30,6 @@ contract Parcelsure {
     mapping(uint256 => Policy) public policies;
 
     function createProduct(uint256 dailyDelayPayout, uint128 premiumPercentage, uint128 maxDelayDays) public payable {
-        require(
-            msg.value > (dailyDelayPayout * maxDelayDays), 
-            "Not enough capital provided to insure a policy"
-        );
         require(premiumPercentage > 0);
         require(maxDelayDays > 0 && maxDelayDays < 365);
 
