@@ -22,4 +22,9 @@ contract ParcelSure {
         uint256 packageId;
     }
 
+    uint256 public productId = 0;
+    uint256 public policyId = 0;
+    mapping(uint256 => Product) public products;
+    mapping(uint256 => Policy) public policies;
+    
 }
