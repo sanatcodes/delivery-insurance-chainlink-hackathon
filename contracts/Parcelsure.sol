@@ -91,15 +91,4 @@ contract Parcelsure {
         emit PolicyPurchased(msg.sender);
     }
 
-    //boilerplate functions for keepers 
-    function checkUpKeep(){
-
-    }
-
-    function performUpKeep(){
-
-    }
-
-
-
 }
