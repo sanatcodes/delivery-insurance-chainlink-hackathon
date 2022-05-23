@@ -13,7 +13,7 @@ contract Parcelsure {
     /* STRUCTS */
     struct InsuranceProduct {
         uint256 productId;
-        address insurer;
+        address payable insurer;
         uint256 dailyDelayPayout;
         uint256 availCapital;
         uint128 premiumPercentage;
@@ -52,7 +52,7 @@ contract Parcelsure {
 
         InsuranceProduct memory product = InsuranceProduct({
             productId: productId,
-            insurer: msg.sender,
+            insurer: payable(msg.sender),
             dailyDelayPayout: dailyDelayPayout,
             availCapital: msg.value,
             premiumPercentage: premiumPercentage,
@@ -73,7 +73,7 @@ contract Parcelsure {
             packageId: trackingNumber,
             dateCreated: block.timestamp,
             value: value,
-            insuree: msg.sender
+            insuree: payable(msg.sender)
         });
 
         policies[policyId] = policy;
