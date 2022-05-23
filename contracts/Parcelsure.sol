@@ -66,10 +66,10 @@ contract Parcelsure {
         uint256 productId,
         uint256 trackingNumber,
         uint256 value
-    ) public {
+    ) public payable {
         Policy memory policy = Policy({
             policyId: _policyId,
-            productId: _productId,
+            productId: productId,
             packageId: trackingNumber,
             dateCreated: block.timestamp,
             value: value,
