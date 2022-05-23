@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "hardhat": "^2.9.6"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
   }
 }
