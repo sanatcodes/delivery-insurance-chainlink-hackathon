@@ -32,8 +32,8 @@ contract Parcelsure {
     //not sure if we need this
     address payable[] private _users;
 
-    uint256 public productId = 0;
-    uint256 public policyId = 0;
+    uint256 private _productId = 0;
+    uint256 private _policyId = 0;
     mapping(uint256 => InsuranceProduct) public products;
     mapping(uint256 => Policy) public policies;
     mapping(uint256 => address) public addresses;
@@ -51,15 +51,15 @@ contract Parcelsure {
         require(maxDelayDays > 0 && maxDelayDays < 365);
 
         InsuranceProduct memory product = InsuranceProduct({
-            productId: productId,
+            productId: _productId,
             insurer: payable(msg.sender),
             dailyDelayPayout: dailyDelayPayout,
             availCapital: msg.value,
             premiumPercentage: premiumPercentage,
             maxDelayDays: maxDelayDays
         });
-        products[productId] = product;
-        productId++;
+        products[_productId] = product;
+        _productId++;
     }
 
     function createPolicy(
@@ -68,8 +68,8 @@ contract Parcelsure {
         uint256 value
     ) public {
         Policy memory policy = Policy({
-            policyId: policyId,
-            productId: productId,
+            policyId: _policyId,
+            productId: _productId,
             packageId: trackingNumber,
             dateCreated: block.timestamp,
             value: value,
@@ -85,8 +85,8 @@ contract Parcelsure {
             revert Parcelsure__SendMoreETHtoEnterRaffle();
         }
 
-        policies[policyId] = policy;
-        policyId++;
+        policies[_policyId] = policy;
+        _policyId++;
 
         emit PolicyPurchased(msg.sender);
     }
