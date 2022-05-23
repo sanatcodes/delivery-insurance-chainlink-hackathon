@@ -26,8 +26,10 @@ contract Parcelsure {
         uint256 packageId;
         uint256 dateCreated;
         uint256 value;
+        address payable insuree;
     }
 
+    //not sure if we need this
     address payable[] private users;
 
     uint256 public productId = 0;
@@ -70,7 +72,8 @@ contract Parcelsure {
             productId: productId,
             packageId: trackingNumber,
             dateCreated: block.timestamp,
-            value: value
+            value: value,
+            insuree: msg.sender
         });
 
         policies[policyId] = policy;
