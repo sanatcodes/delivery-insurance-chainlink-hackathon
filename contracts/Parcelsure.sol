@@ -91,23 +91,6 @@ contract Parcelsure {
         emit PolicyPurchased(msg.sender);
     }
 
-
-    function reimbursement(policyId) public payable {
-
-        Policy memory policy = policies[policyId];
-        InsuranceProduct memory product = products[policy.productId];
-        uint256 daysDelayedCount = 0;
-
-        //check if the package is delayed through keepers
-        if( daysDelayedCount < product.daysDelayedCount && ) {
-            uint256 amountPayable = policy.value * premium.dailyDelayPayout;
-            address[policy.policyId].transfer(amountPayable);
-            policy.availCapital = policy.availCapital - amountPayable;
-            daysDelayedCount++
-        }
-        
-    }
-
     //boilerplate functions for keepers 
     function checkUpKeep(){
 
