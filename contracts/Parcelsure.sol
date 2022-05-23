@@ -30,7 +30,7 @@ contract Parcelsure {
     }
 
     //not sure if we need this
-    address payable[] private users;
+    address payable[] private _users;
 
     uint256 public productId = 0;
     uint256 public policyId = 0;
@@ -75,16 +75,8 @@ contract Parcelsure {
             value: value,
             insuree: payable(msg.sender)
         });
-
-        policies[policyId] = policy;
-        policyId++;
-    }
-
-    function getPolicy(uint256 _policyId) public payable {
-        Policy memory policy = policies[_policyId];
         InsuranceProduct memory product = products[policy.productId];
 
-        //not sure if this is the formula we are going for
         uint256 premium = policy.value * product.premiumPercentage;
         if (premium <= 0) {
             revert Parcelsure__PremiumNeedsToBeMoreThanZero();
@@ -93,18 +85,16 @@ contract Parcelsure {
             revert Parcelsure__SendMoreETHtoEnterRaffle();
         }
 
-        //find a way to do this without arrays 
-        users.push(payable(msg.sender));
-        addresses[policyId] = msg.sender;
+        policies[policyId] = policy;
+        policyId++;
 
-        //do we need this?
         emit PolicyPurchased(msg.sender);
     }
 
 
-    function reimbursement(_policyId) public payable {
+    function reimbursement(policyId) public payable {
 
-        Policy memory policy = policies[_policyId];
+        Policy memory policy = policies[policyId];
         InsuranceProduct memory product = products[policy.productId];
         uint256 daysDelayedCount = 0;
 
