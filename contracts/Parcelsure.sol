@@ -39,7 +39,11 @@ contract Parcelsure {
     mapping(uint256 => address) public addresses;
 
     /* Events */
-    event PolicyPurchased(address indexed users);
+    event PolicyPurchased(
+        uint256 indexed productId,
+        uint256 indexed policyId,
+        address indexed insuree
+    );
 
     /* Functions */
     function createProduct(
@@ -84,11 +88,11 @@ contract Parcelsure {
         if (msg.value < premium) {
             revert Parcelsure__SendMoreETHtoEnterRaffle();
         }
-
+        
         policies[_policyId] = policy;
         _policyId++;
-
-        emit PolicyPurchased(msg.sender);
+        
+        emit PolicyPurchased(productId, policy.policyId, msg.sender);
     }
 
 }
