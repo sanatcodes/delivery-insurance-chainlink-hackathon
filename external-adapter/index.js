@@ -21,14 +21,14 @@ const createRequest = (input, callback) => {
     // The Validator helps you validate the Chainlink request data
     const validator = new Validator(callback, input, customParams)
     const jobRunID = validator.validated.id
-    const endpoint = validator.validated.data.endpoint || 'price'
-    const url = `https://min-api.cryptocompare.com/data/${endpoint}`
-    const fsym = validator.validated.data.base.toUpperCase()
-    const tsyms = validator.validated.data.quote.toUpperCase()
+
+    const API_KEY = process.env.API_KEY
+    const trackingId = validator.validated.data.trackingId
+
+    const url = `https://api.trackingmore.com/v3/trackings/get?tracking_numbers=${trackingId}`
 
     const params = {
-        fsym,
-        tsyms
+        trackingId
     }
 
     // This is where you would add method and headers
