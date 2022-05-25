@@ -25,7 +25,7 @@ const createRequest = (input, callback) => {
     const API_KEY = process.env.API_KEY
     const trackingId = validator.validated.data.trackingId
 
-    const url = `https://api.trackingmore.com/v3/trackings/get?tracking_numbers=${trackingId}`
+    const url = `https://api.trackingmore.com/v3/trackings/sandbox/get?tracking_numbers=${trackingId}`
 
     const params = {
         trackingId
