@@ -31,6 +31,10 @@ const createRequest = (input, callback) => {
         trackingId
     }
 
+    const headers = {
+        'Tracking-Api-Key': API_KEY
+    }
+
     // This is where you would add method and headers
     // you can add method like GET or POST and add it to the config
     // The default is GET requests
@@ -38,7 +42,8 @@ const createRequest = (input, callback) => {
     // headers = 'headers.....'
     const config = {
         url,
-        params
+        params,
+        headers
     }
 
     // The Requester allows API calls be retry in case of timeout
