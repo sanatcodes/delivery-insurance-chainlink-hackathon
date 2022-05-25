@@ -13,8 +13,7 @@ const customError = (data) => {
 // with a Boolean value indicating whether or not they
 // should be required.
 const customParams = {
-  base: ['base', 'from', 'coin'],
-  quote: ['quote', 'to', 'market'],
+  trackingId: ['trackingId'],
   endpoint: false
 }
 
