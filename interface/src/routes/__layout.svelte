@@ -33,9 +33,14 @@
             $provider?.getBalance($account).then(bal => $walletBalance = bal)
         }) 
     }
+    const pagesRequireWallet = ["/get-insured", "/offer-insurance"];
 </script>
 <Navbar></Navbar>
-<slot />
+{#if pagesRequireWallet.includes($page.url.pathname) && $walletBalance === undefined}
+    <h2>Please connect your web3 wallet</h2>
+{:else}
+    <slot />
+{/if}
 <div id="background-radial-gradient" style="width: 200vw;height: 200vh;transform: translate(-50vw, -100vh);"></div>
 <style>
     #background-radial-gradient {
