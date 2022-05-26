@@ -1,6 +1,6 @@
 const { Requester, Validator } = require('@chainlink/external-adapter')
 require('dotenv').config()
-
+const axios = require('axios').default
 // Define custom error scenarios for the API.
 // Return true for the adapter to retry.
 const customError = (data) => {
@@ -17,6 +17,8 @@ const customParams = {
     endpoint: false
 }
 
+const BASE_URL = 'https://api.trackingmore.com/v3/trackings/sandbox'
+
 const createRequest = (input, callback) => {
     // The Validator helps you validate the Chainlink request data
     const validator = new Validator(callback, input, customParams)
@@ -25,7 +27,7 @@ const createRequest = (input, callback) => {
     const API_KEY = process.env.API_KEY
     const trackingId = validator.validated.data.trackingId
 
-    const url = `https://api.trackingmore.com/v3/trackings/sandbox/get?tracking_numbers=${trackingId}`
+    const url = `${BASE_URL}/get?tracking_numbers=${trackingId}`
 
     const params = {
         trackingId
@@ -49,11 +51,26 @@ const createRequest = (input, callback) => {
     // The Requester allows API calls be retry in case of timeout
     // or connection failure
     Requester.request(config, customError)
-        .then(response => {
+        .then(async response => {
             // It's common practice to store the desired value at the top-level
             // result key. This allows different adapters to be compatible with
             // one another.
             // response.data.result = Requester.validateResultNumber(response.data, [tsyms])
+            const trackingData = response.data.data[0]
+            const res = await axios.post(`${BASE_URL}/transittime`,
+                {
+                    courier_code: trackingData.courier_code,
+                    original_code: trackingData.original,
+                    destination_code: trackingData.destination
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Tracking-Api-Key': API_KEY
+                    }
+                })
+            const avgDeliveryTime = res.data.data.day
+            trackingData.average_delivery_time = avgDeliveryTime
             callback(response.status, Requester.success(jobRunID, response.data))
         })
         .catch(error => {
