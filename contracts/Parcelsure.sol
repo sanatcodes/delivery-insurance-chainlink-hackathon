@@ -6,7 +6,7 @@ pragma solidity ^0.8.7;
 import "hardhat/console.sol";
 
 /* ERRORS */
-error Parcelsure__SendMoreETHtoEnterRaffle();
+error Parcelsure__SendMoreETH();
 error Parcelsure__PremiumNeedsToBeMoreThanZero();
 
 contract Parcelsure {
@@ -86,7 +86,7 @@ contract Parcelsure {
             revert Parcelsure__PremiumNeedsToBeMoreThanZero();
         }
         if (msg.value < premium) {
-            revert Parcelsure__SendMoreETHtoEnterRaffle();
+            revert Parcelsure__SendMoreETH();
         }
         
         policies[_policyId] = policy;
