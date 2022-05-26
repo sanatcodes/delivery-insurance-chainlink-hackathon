@@ -30,7 +30,7 @@
     $: if ($provider) {
         $provider.getBalance($account).then(bal => $walletBalance = bal)
         $provider.on("block", async () => {
-            $provider.getBalance($account).then(bal => $walletBalance = bal)
+            $provider?.getBalance($account).then(bal => $walletBalance = bal)
         }) 
     }
 </script>

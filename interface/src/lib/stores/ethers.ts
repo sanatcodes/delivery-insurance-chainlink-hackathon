@@ -9,4 +9,4 @@ export const provider = derived(account, ($account) => {
 })
 
 //Metamask ETH balance
-export const walletBalance = writable(null);
+export const walletBalance = writable();
