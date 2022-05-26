@@ -23,7 +23,7 @@ contract Parcelsure {
     struct Policy {
         uint256 policyId;
         uint256 productId;
-        uint256 packageId;
+        uint256 trackingId;
         uint256 dateCreated;
         uint256 value;
         address payable insuree;
@@ -74,7 +74,7 @@ contract Parcelsure {
         Policy memory policy = Policy({
             policyId: _policyId,
             productId: productId,
-            packageId: trackingNumber,
+            trackingId: trackingNumber,
             dateCreated: block.timestamp,
             value: value,
             insuree: payable(msg.sender)
