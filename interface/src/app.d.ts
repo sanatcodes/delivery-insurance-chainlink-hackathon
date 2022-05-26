@@ -13,3 +13,7 @@ declare namespace App {
 
 	// interface Stuff {}
 }
+
+interface Window {
+	ethereum: any
+}
