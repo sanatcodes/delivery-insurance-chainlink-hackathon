@@ -11,15 +11,15 @@
 		window.ethereum
 			.request( { method: 'eth_accounts' })
 			.then(handleAccountsChanged)
-			.catch((err) => {
+			.catch((err: any) => {
 				console.error(err)
 			})
-		window.ethereum.on('connect', (chainId) => {
+		window.ethereum.on('connect', (chainId: number) => {
 			$account = window.ethereum.selectedAddress
 		})
 		window.ethereum.on('disconnect', console.log)
 		window.ethereum.on('accountsChanged', handleAccountsChanged)
-		window.ethereum.on('chainChanged', (id) => {
+		window.ethereum.on('chainChanged', (id: number) => {
 			window.location.reload()
 		})
 	})
