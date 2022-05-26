@@ -56,6 +56,8 @@ const createRequest = (input, callback) => {
             // result key. This allows different adapters to be compatible with
             // one another.
             // response.data.result = Requester.validateResultNumber(response.data, [tsyms])
+
+            // Get average delivery time
             const trackingData = response.data.data[0]
             const res = await axios.post(`${BASE_URL}/transittime`,
                 {
@@ -71,6 +73,7 @@ const createRequest = (input, callback) => {
                 })
             const avgDeliveryTime = res.data.data.day
             trackingData.average_delivery_time = avgDeliveryTime
+
             callback(response.status, Requester.success(jobRunID, response.data))
         })
         .catch(error => {
