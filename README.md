@@ -1,4 +1,4 @@
-# delivery-insurance-chainlink-hackathon
+# ParcelSure
 A decentralized and transparent way to insure your parcels through blockchain using web3 technologies
 
 ## Our Goal
