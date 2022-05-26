@@ -32,6 +32,7 @@
 	"type": "module",
 	"dependencies": {
 		"@fontsource/fira-mono": "^4.5.0",
+		"@kahi-ui/framework": "^0.6.4",
 		"cookie": "^0.4.1"
 	}
 }
