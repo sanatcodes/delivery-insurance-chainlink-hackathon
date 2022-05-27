@@ -18,7 +18,7 @@ const customParams = {
 }
 
 const BASE_URL = 'https://api.trackingmore.com/v3/trackings/sandbox'
-let counter = 0
+const counter = {}
 
 const createRequest = (input, callback) => {
     // The Validator helps you validate the Chainlink request data
@@ -58,11 +58,13 @@ const createRequest = (input, callback) => {
             // one another.
             // response.data.result = Requester.validateResultNumber(response.data, [tsyms])
 
+            counter[trackingId] = counter[trackingId] === undefined ? 0 : counter[trackingId] + 1
+
             // Get average delivery time
             const trackingData = response.data.data[0]
             trackingData.delivery_status = 0 // pending
-            trackingData.transit_time = counter
-            if (counter === 10) {
+            trackingData.transit_time = counter[trackingId]
+            if (counter[trackingId] === 10) {
                 trackingData.delivery_status = 1
             }
             const res = await axios.post(`${BASE_URL}/transittime`,
@@ -79,8 +81,6 @@ const createRequest = (input, callback) => {
                 })
             const avgDeliveryTime = res.data.data.day
             trackingData.average_delivery_time = avgDeliveryTime
-
-            counter++
 
             callback(response.status, Requester.success(jobRunID, response.data))
         })
