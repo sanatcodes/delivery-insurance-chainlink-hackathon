@@ -8,7 +8,7 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 error Parcelsure__SendMoreETH();
 error Parcelsure__PremiumNeedsToBeMoreThanZero();
 
-contract Parcelsure is ChainlinkClient {
+contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
     using Chainlink for Chainlink.Request;
 
     /* STRUCTS */
@@ -134,6 +134,18 @@ contract Parcelsure is ChainlinkClient {
         _policyId++;
         
         emit PolicyPurchased(productId, policy.policyId, msg.sender);
+    }
+
+    function checkUpkeep(bytes calldata checkData) external view override returns (bool upkeepNeeded, bytes memory performData) {
+        upkeepNeeded = (block.timestamp - lastTimeStamp) > keeperInterval;
+        performData = checkData;
+    }
+
+    function performUpkeep(bytes calldata performData) external override {
+        if ((block.timestamp - lastTimeStamp) > keeperInterval ) {
+            lastTimeStamp = block.timestamp;
+        }
+        performData;
     }
 
 }
