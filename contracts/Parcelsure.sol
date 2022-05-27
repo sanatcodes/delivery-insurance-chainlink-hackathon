@@ -52,6 +52,12 @@ contract Parcelsure is ChainlinkClient {
         address indexed insuree
     );
 
+    event ReqFulfilled(
+        bytes32 deliveryStatus,
+        uint256 transitTime,
+        uint256 avgTime
+    );
+
     /* Functions */
     constructor() {
         //Node oracle address
@@ -65,9 +71,16 @@ contract Parcelsure is ChainlinkClient {
     public
     returns (bytes32 requestId) {
         Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfillTrackingData.selector);
-        request.add("trackingId", trackingId);
+        request.add("trackingId", string(abi.encodePacked(trackingId)));
         requestId = sendChainlinkRequestTo(_oracle, request, _fee);
-    }   
+    }
+
+    //Function called by oracle with request response
+    function fulfillTrackingData(bytes32 requestId, bytes32 deliveryStatus, uint256 transitTime, uint256 avgTime)
+    public
+    recordChainlinkFulfillment(requestId) {
+        emit ReqFulfilled(deliveryStatus, transitTime, avgTime);
+    }
 
     function createProduct(
         uint256 dailyDelayPayout,
