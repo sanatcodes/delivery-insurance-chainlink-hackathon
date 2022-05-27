@@ -49,8 +49,10 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
     address private immutable _oracle;
     bytes32 private immutable _jobId;
     uint256 private immutable _fee;
-    uint public immutable keeperInterval;
-    uint public lastTimeStamp;
+
+    uint256 public immutable keeperInterval;
+    uint256 public lastTimeStamp;
+    uint256 public keeperPolicyIndex = 0;
 
     /* Events */
     event PolicyPurchased(
@@ -146,15 +148,27 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
     }
 
     function checkUpkeep(bytes calldata checkData) external view override returns (bool upkeepNeeded, bytes memory performData) {
-        upkeepNeeded = (block.timestamp - lastTimeStamp) > keeperInterval;
+        bool isIntervalExceeded = (block.timestamp - lastTimeStamp) > keeperInterval;
+        upkeepNeeded = isIntervalExceeded;
         performData = checkData;
     }
 
-    function performUpkeep(bytes calldata performData) external override {
-        if ((block.timestamp - lastTimeStamp) > keeperInterval ) {
+    function performUpkeep(bytes calldata /* performData */) external override {
+        // End iteration cycle
+        if ((block.timestamp - lastTimeStamp) > keeperInterval && keeperPolicyIndex == (policies.length - 1)) {
             lastTimeStamp = block.timestamp;
+            return;
         }
-        performData;
+
+        // Go through remaining policies in current iteration cycle. Call API on the first active Policy
+        // An iteration cycle is when the keeper executes an API call for every active policy in seperate transactions
+        // Iteration cycle is triggered by the keeperInterval condition
+        for (uint256 i = (keeperPolicyIndex + 1); i < policies.length; i++) {
+            if (policies[i].state == PolicyState.INACTIVE) continue;
+            requestTrackingData(policies[i].trackingId);
+            keeperPolicyIndex = i;
+            break;
+        }
     }
 
 }
