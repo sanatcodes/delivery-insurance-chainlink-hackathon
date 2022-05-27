@@ -40,9 +40,11 @@ contract Parcelsure is ChainlinkClient {
     mapping(uint256 => Policy) public policies;
     mapping(uint256 => address) public addresses;
 
-    address private _oracle;
-    bytes32 private _jobId;
-    uint256 private _fee;
+    address private immutable _oracle;
+    bytes32 private immutable _jobId;
+    uint256 private immutable _fee;
+    uint public immutable keeperInterval;
+    uint public lastTimeStamp;
 
     /* Events */
     event PolicyPurchased(
@@ -65,6 +67,9 @@ contract Parcelsure is ChainlinkClient {
         _jobId = "62026cd6254542dbb769a1467dea4452";
         _fee = 0;
         setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
+
+        keeperInterval = 24 hours;
+        lastTimeStamp = block.timestamp;
     }
 
     // send api request to oracle. Public for testing purposes only 
