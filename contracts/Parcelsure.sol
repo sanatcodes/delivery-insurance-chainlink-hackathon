@@ -11,6 +11,12 @@ error Parcelsure__PremiumNeedsToBeMoreThanZero();
 contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
     using Chainlink for Chainlink.Request;
 
+    /* ENUMS */
+    enum PolicyState {
+        ACTIVE,
+        INACTIVE
+    }
+
     /* STRUCTS */
     struct InsuranceProduct {
         uint256 productId;
@@ -28,6 +34,8 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         uint256 dateCreated;
         uint256 value;
         address payable insuree;
+        PolicyState state;
+        uint256 lastReqTimestamp;
     }
 
     // not sure if we need this
@@ -117,7 +125,9 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
             trackingId: trackingId,
             dateCreated: block.timestamp,
             value: value,
-            insuree: payable(msg.sender)
+            insuree: payable(msg.sender),
+            state: PolicyState.ACTIVE,
+            lastReqTimestamp: 0
         });
         InsuranceProduct memory product = products[policy.productId];
 
