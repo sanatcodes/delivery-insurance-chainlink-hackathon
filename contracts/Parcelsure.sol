@@ -110,7 +110,7 @@ contract Parcelsure is ChainlinkClient {
         Policy memory policy = Policy({
             policyId: _policyId,
             productId: productId,
-            trackingId: bytes32,
+            trackingId: trackingId,
             dateCreated: block.timestamp,
             value: value,
             insuree: payable(msg.sender)
