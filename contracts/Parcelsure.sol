@@ -95,9 +95,12 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
     }
 
     // Function called by oracle with request response
-    function fulfillTrackingData(bytes32 requestId, uint256 deliveryStatus, uint256 transitTime, uint256 avgTime)
-    public
-    recordChainlinkFulfillment(requestId) {
+    function fulfillTrackingData(
+        bytes32 requestId,
+        uint256 deliveryStatus,
+        uint256 transitTime,
+        uint256 avgTime
+    ) public recordChainlinkFulfillment(requestId) {
         emit ReqFulfilled(requestId, deliveryStatus, transitTime, avgTime);
     }
 
@@ -152,7 +155,8 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         emit PolicyPurchased(productId, policy.policyId, msg.sender);
     }
 
-    function checkUpkeep(bytes calldata checkData) external view override returns (bool upkeepNeeded, bytes memory performData) {
+    function checkUpkeep(bytes calldata checkData) 
+    external view override returns (bool upkeepNeeded, bytes memory performData) {
         bool isIntervalExceeded = (block.timestamp - lastTimeStamp) > keeperInterval;
         upkeepNeeded = isIntervalExceeded;
         performData = checkData;
@@ -165,10 +169,13 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
             return;
         }
 
-        // Go through remaining policies in current iteration cycle. Call API on the first active Policy
+        // Go through remaining policies in current policy iteration cycle. Call API on the first active Policy
         // An iteration cycle is when the keeper executes an API call for every active policy in seperate transactions
-        // Iteration cycle is triggered by the keeperInterval condition
+        // Policy iteration cycle is triggered when keeperInterval is exceeded
         for (uint256 i = (keeperPolicyIndex + 1); i < policies.length; i++) {
+            if (i == policies.length - 1) {
+                keeperPolicyIndex = policies.length - 1;
+            }
             if (policies[i].state == PolicyState.INACTIVE) continue;
             requestTrackingData(policies[i].trackingId);
             keeperPolicyIndex = i;
