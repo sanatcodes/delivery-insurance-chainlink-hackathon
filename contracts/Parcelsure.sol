@@ -31,7 +31,7 @@ contract Parcelsure is ChainlinkClient {
         address payable insuree;
     }
 
-    //not sure if we need this
+    // not sure if we need this
     address payable[] private _users;
 
     uint256 private _productId = 0;
@@ -59,14 +59,15 @@ contract Parcelsure is ChainlinkClient {
     );
     /* Functions */
     constructor() {
-        //Node oracle address
+        // TODO: make these value constructor arguments
+        // Node oracle address
         _oracle = 0x3ad58Cd3209e843D876Cf2f318E1F402BE267359;
         _jobId = "62026cd6254542dbb769a1467dea4452";
         _fee = 0;
         setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
     }
 
-    //send api request to oracle. Public for testing purposes only 
+    // send api request to oracle. Public for testing purposes only 
     function requestTrackingData(bytes32 trackingId)
     public
     returns (bytes32 requestId) {
@@ -75,7 +76,7 @@ contract Parcelsure is ChainlinkClient {
         requestId = sendChainlinkRequestTo(_oracle, request, _fee);
     }
 
-    //Function called by oracle with request response
+    // Function called by oracle with request response
     function fulfillTrackingData(bytes32 requestId, uint256 deliveryStatus, uint256 transitTime, uint256 avgTime)
     public
     recordChainlinkFulfillment(requestId) {
