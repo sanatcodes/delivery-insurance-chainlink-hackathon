@@ -172,13 +172,13 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         // Go through remaining policies in current policy iteration cycle. Call API on the first active Policy
         // An iteration cycle is when the keeper executes an API call for every active policy in seperate transactions
         // Policy iteration cycle is triggered when keeperInterval is exceeded
-        for (uint256 i = (keeperPolicyIndex + 1); i < policies.length; i++) {
+        for (uint256 i = (keeperPolicyIndex); i < policies.length; i++) {
             if (i == policies.length - 1) {
                 keeperPolicyIndex = policies.length - 1;
             }
             if (policies[i].state == PolicyState.INACTIVE) continue;
             requestTrackingData(policies[i].trackingId);
-            keeperPolicyIndex = i;
+            keeperPolicyIndex = i+1;
             break;
         }
     }
