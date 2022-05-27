@@ -17,6 +17,11 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         INACTIVE
     }
 
+    enum DeliveryStatus {
+        TRANSIT,
+        FINISHED
+    }
+
     /* STRUCTS */
     struct InsuranceProduct {
         uint256 productId;
