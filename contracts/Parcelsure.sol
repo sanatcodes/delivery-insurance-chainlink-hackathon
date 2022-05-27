@@ -52,16 +52,16 @@ contract Parcelsure is ChainlinkClient {
     );
 
     event ReqFulfilled(
-        bytes32 deliveryStatus,
+        bytes32 requestId,
+        uint256 deliveryStatus,
         uint256 transitTime,
         uint256 avgTime
     );
-
     /* Functions */
     constructor() {
         //Node oracle address
         _oracle = 0x3ad58Cd3209e843D876Cf2f318E1F402BE267359;
-        _jobId = "893372976a8242b7be7ab6bc5e3b45da";
+        _jobId = "62026cd6254542dbb769a1467dea4452";
         _fee = 0;
         setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
     }
@@ -76,10 +76,10 @@ contract Parcelsure is ChainlinkClient {
     }
 
     //Function called by oracle with request response
-    function fulfillTrackingData(bytes32 requestId, bytes32 deliveryStatus, uint256 transitTime, uint256 avgTime)
+    function fulfillTrackingData(bytes32 requestId, uint256 deliveryStatus, uint256 transitTime, uint256 avgTime)
     public
     recordChainlinkFulfillment(requestId) {
-        emit ReqFulfilled(deliveryStatus, transitTime, avgTime);
+        emit ReqFulfilled(requestId, deliveryStatus, transitTime, avgTime);
     }
 
     function createProduct(
