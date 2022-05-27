@@ -1,0 +1,11 @@
+{
+    "build": {
+      "image": "node:fleek/svelte",
+      "command": "npm install && npm run build",
+      "publicDir": "output",
+      "baseDir": "src",
+      "environment": {
+        "SOME_ENV": "Build finished!"
+      }
+    }
+   }
