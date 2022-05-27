@@ -3,13 +3,15 @@ pragma solidity ^0.8.7;
 
 // import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 // import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
-import "hardhat/console.sol";
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
 /* ERRORS */
 error Parcelsure__SendMoreETH();
 error Parcelsure__PremiumNeedsToBeMoreThanZero();
 
-contract Parcelsure {
+contract Parcelsure is ChainlinkClient {
+    using Chainlink for Chainlink.Request;
+
     /* STRUCTS */
     struct InsuranceProduct {
         uint256 productId;
@@ -23,7 +25,7 @@ contract Parcelsure {
     struct Policy {
         uint256 policyId;
         uint256 productId;
-        uint256 trackingId;
+        bytes32 trackingId;
         uint256 dateCreated;
         uint256 value;
         address payable insuree;
@@ -38,6 +40,10 @@ contract Parcelsure {
     mapping(uint256 => Policy) public policies;
     mapping(uint256 => address) public addresses;
 
+    address private _oracle;
+    bytes32 private _jobId;
+    uint256 private _fee;
+
     /* Events */
     event PolicyPurchased(
         uint256 indexed productId,
@@ -45,7 +51,37 @@ contract Parcelsure {
         address indexed insuree
     );
 
+    event ReqFulfilled(
+        bytes32 requestId,
+        uint256 deliveryStatus,
+        uint256 transitTime,
+        uint256 avgTime
+    );
     /* Functions */
+    constructor() {
+        //Node oracle address
+        _oracle = 0x3ad58Cd3209e843D876Cf2f318E1F402BE267359;
+        _jobId = "62026cd6254542dbb769a1467dea4452";
+        _fee = 0;
+        setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
+    }
+
+    //send api request to oracle. Public for testing purposes only 
+    function requestTrackingData(bytes32 trackingId)
+    public
+    returns (bytes32 requestId) {
+        Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfillTrackingData.selector);
+        request.add("trackingId", string(abi.encodePacked(trackingId)));
+        requestId = sendChainlinkRequestTo(_oracle, request, _fee);
+    }
+
+    //Function called by oracle with request response
+    function fulfillTrackingData(bytes32 requestId, uint256 deliveryStatus, uint256 transitTime, uint256 avgTime)
+    public
+    recordChainlinkFulfillment(requestId) {
+        emit ReqFulfilled(requestId, deliveryStatus, transitTime, avgTime);
+    }
+
     function createProduct(
         uint256 dailyDelayPayout,
         uint128 premiumPercentage,
@@ -68,13 +104,13 @@ contract Parcelsure {
 
     function createPolicy(
         uint256 productId,
-        uint256 trackingNumber,
+        bytes32 trackingId,
         uint256 value
     ) public payable {
         Policy memory policy = Policy({
             policyId: _policyId,
             productId: productId,
-            trackingId: trackingNumber,
+            trackingId: trackingId,
             dateCreated: block.timestamp,
             value: value,
             insuree: payable(msg.sender)

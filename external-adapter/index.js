@@ -59,6 +59,12 @@ const createRequest = (input, callback) => {
 
             // Get average delivery time
             const trackingData = response.data.data[0]
+            const deliveryStatus = trackingData.delivery_status
+            if (deliveryStatus === 'pending' || deliveryStatus === 'transit') {
+                trackingData.delivery_status = 0
+            } else {
+                trackingData.delivery_status = 1
+            }
             const res = await axios.post(`${BASE_URL}/transittime`,
                 {
                     courier_code: trackingData.courier_code,
