@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@chainlink/contracts@^0.4.1":
+  "integrity" "sha512-eC8biY6Ks8k9kZKVt5305veCP3z57yyiy6Os5aR6auta6Bp34xWQ/s4qvrifcW4FNgWw1HJPwMPXDGfiehcLjg=="
+  "resolved" "https://registry.npmjs.org/@chainlink/contracts/-/contracts-0.4.1.tgz"
+  "version" "0.4.1"
+
 "@ethereumjs/block@^3.5.0", "@ethereumjs/block@^3.6.2":
   "integrity" "sha512-mOqYWwMlAZpYUEOEqt7EfMFuVL2eyLqWWIzcf4odn6QgXY8jBI2NhVuJncrMCKeMZrsJAe7/auaRRB6YcdH+Qw=="
   "resolved" "https://registry.npmjs.org/@ethereumjs/block/-/block-3.6.2.tgz"

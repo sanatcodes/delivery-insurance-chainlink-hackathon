@@ -16,9 +16,9 @@ they might not be able to deliver as promptly as Amazon, consumers do have the g
 - Chainlink
 - Solidity
 - IPFS
-- Moralis 
 - Hardhat 
 - Svelte 
+- Polygon
 
 ### Testing Dependancy
 - In order to locally test our parcel [trackingAPI](https://github.com/sanatcodes/mockAPItestingMore/tree/improving_api) we mocked it using [Varcel](varcel.com)
