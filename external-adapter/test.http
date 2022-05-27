@@ -1,5 +1,5 @@
 ### Get example tracking information
-POST https://4ef1-77-75-244-138.eu.ngrok.io
+POST http://localhost:8080/
 Content-Type: application/json
 
 {   
