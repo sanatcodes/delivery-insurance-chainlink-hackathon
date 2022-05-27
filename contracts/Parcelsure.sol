@@ -35,9 +35,8 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
 
     uint256 private _productId = 0;
     uint256 private _policyId = 0;
-    mapping(uint256 => InsuranceProduct) public products;
-    mapping(uint256 => Policy) public policies;
-    mapping(uint256 => address) public addresses;
+    InsuranceProduct[] public products;
+    Policy[] public policies;
 
     address private immutable _oracle;
     bytes32 private immutable _jobId;
@@ -103,7 +102,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
             premiumPercentage: premiumPercentage,
             maxDelayDays: maxDelayDays
         });
-        products[_productId] = product;
+        products.push(product);
         _productId++;
     }
 
@@ -130,7 +129,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
             revert Parcelsure__SendMoreETH();
         }
         
-        policies[_policyId] = policy;
+        policies.push(policy);
         _policyId++;
         
         emit PolicyPurchased(productId, policy.policyId, msg.sender);
