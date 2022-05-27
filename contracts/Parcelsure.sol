@@ -4,7 +4,6 @@ pragma solidity ^0.8.7;
 // import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 // import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-import "hardhat/console.sol";
 
 /* ERRORS */
 error Parcelsure__SendMoreETH();
@@ -62,8 +61,9 @@ contract Parcelsure is ChainlinkClient {
     constructor() {
         //Node oracle address
         _oracle = 0x3ad58Cd3209e843D876Cf2f318E1F402BE267359;
-        _jobId = "14a11845379341088dd606fc62a9a417";
+        _jobId = "893372976a8242b7be7ab6bc5e3b45da";
         _fee = 0;
+        setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
     }
 
     //send api request to oracle. Public for testing purposes only 
