@@ -26,7 +26,7 @@ contract Parcelsure is ChainlinkClient {
     struct Policy {
         uint256 policyId;
         uint256 productId;
-        uint256 trackingId;
+        bytes32 trackingId;
         uint256 dateCreated;
         uint256 value;
         address payable insuree;
@@ -41,6 +41,10 @@ contract Parcelsure is ChainlinkClient {
     mapping(uint256 => Policy) public policies;
     mapping(uint256 => address) public addresses;
 
+    address private _oracle;
+    bytes32 private _jobId;
+    uint256 private _fee;
+
     /* Events */
     event PolicyPurchased(
         uint256 indexed productId,
@@ -50,11 +54,20 @@ contract Parcelsure is ChainlinkClient {
 
     /* Functions */
     constructor() {
-        //ERC20 Link token address
-        setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
         //Node oracle address
-        setChainlinkOracle(0x3ad58Cd3209e843D876Cf2f318E1F402BE267359);
+        _oracle = 0x3ad58Cd3209e843D876Cf2f318E1F402BE267359;
+        _jobId = "14a11845379341088dd606fc62a9a417";
+        _fee = 0;
     }
+
+    //send api request to oracle. Public for testing purposes only 
+    function requestTrackingData(bytes32 trackingId)
+    public
+    returns (bytes32 requestId) {
+        Chainlink.Request memory request = buildChainlinkRequest(_jobId, address(this), this.fulfillTrackingData.selector);
+        request.add("trackingId", trackingId);
+        requestId = sendChainlinkRequestTo(_oracle, request, _fee);
+    }   
 
     function createProduct(
         uint256 dailyDelayPayout,
@@ -78,13 +91,13 @@ contract Parcelsure is ChainlinkClient {
 
     function createPolicy(
         uint256 productId,
-        uint256 trackingNumber,
+        bytes32 trackingId,
         uint256 value
     ) public payable {
         Policy memory policy = Policy({
             policyId: _policyId,
             productId: productId,
-            trackingId: trackingNumber,
+            trackingId: bytes32,
             dateCreated: block.timestamp,
             value: value,
             insuree: payable(msg.sender)
