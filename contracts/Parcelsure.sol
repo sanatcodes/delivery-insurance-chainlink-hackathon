@@ -10,7 +10,9 @@ import "hardhat/console.sol";
 error Parcelsure__SendMoreETH();
 error Parcelsure__PremiumNeedsToBeMoreThanZero();
 
-contract Parcelsure {
+contract Parcelsure is ChainlinkClient {
+    using Chainlink for Chainlink.Request;
+
     /* STRUCTS */
     struct InsuranceProduct {
         uint256 productId;
@@ -47,6 +49,13 @@ contract Parcelsure {
     );
 
     /* Functions */
+    constructor() {
+        //ERC20 Link token address
+        setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
+        //Node oracle address
+        setChainlinkOracle(0x3ad58Cd3209e843D876Cf2f318E1F402BE267359);
+    }
+
     function createProduct(
         uint256 dailyDelayPayout,
         uint128 premiumPercentage,
