@@ -1,4 +1,5 @@
-const createRequest = require('./index').createRequest
+// const createRequest = require('./index').createRequest
+const createRequest = require('./mockIndex').createRequest
 
 const express = require('express')
 const bodyParser = require('body-parser')
