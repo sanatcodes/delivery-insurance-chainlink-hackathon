@@ -11,7 +11,7 @@ export const provider = derived(account, ($account) => {
 export const Parcelsure = derived(provider, $provider => {
     if (!$provider) return;       
     const signer = $provider.getSigner();
-    return new ethers.Contract("0x3CC9f9674dC07407AEcb0Eb07903620Cc5FE83C8", contractAbi, signer)
+    return new ethers.Contract("0x1d35279437626a664231D762231D160Fc121E5C5", contractAbi, signer)
 })
 //Metamask ETH balance
 export const walletBalance = writable();

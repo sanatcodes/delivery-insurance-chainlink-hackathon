@@ -81,7 +81,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         _fee = 0;
         setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
 
-        keeperInterval = 3 minutes;
+        keeperInterval = 1 minutes;
         lastTimeStamp = block.timestamp;
     }
 
