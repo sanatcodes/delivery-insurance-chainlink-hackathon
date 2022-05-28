@@ -40,7 +40,6 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         uint256 value;
         address payable insuree;
         PolicyState state;
-        uint256 lastReqTimestamp;
     }
 
     // not sure if we need this
@@ -163,8 +162,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
             dateCreated: block.timestamp,
             value: value,
             insuree: payable(msg.sender),
-            state: PolicyState.ACTIVE,
-            lastReqTimestamp: 0
+            state: PolicyState.ACTIVE
         });
         InsuranceProduct memory product = products[policy.productId];
 
