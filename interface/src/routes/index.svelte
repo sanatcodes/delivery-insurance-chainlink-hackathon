@@ -93,7 +93,7 @@ import {
                 parcels late <br>
                 again!
             </Text>
-            <button class="callToActionBtn">
+            <button class="callToActionBtn" onclick="location.href = '/get-insured'">
                 Get Insured
             </button>
         </Stack.Container>
@@ -110,7 +110,7 @@ import {
     </div>        
     <div class="homepage_copy">
         <Text sizing="huge">
-            A decentralised <br> insurance protocol <br>built on Etherium
+            A decentralised <br> package delivery insurance protocol <br> built on Ethereum
         </Text>
     </div>
 </div>
@@ -122,12 +122,6 @@ import {
 </div>
 <div class="tool_pictures">
     <li>
-        <img src={polygonLogo}/>  
-    </li>
-    <li>
-        <img src={ipfsLogo}/>    
-    </li>
-    <li>
         <img src={clLogo}/>  
     </li>
     <li>
@@ -136,5 +130,6 @@ import {
     <li>
         <img src={hadhatLogo}/>  
     </li>
-</div> 
+</div>
+<br>
 

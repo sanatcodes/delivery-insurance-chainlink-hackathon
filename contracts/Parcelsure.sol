@@ -81,7 +81,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         _fee = 0;
         setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
 
-        keeperInterval = 3 minutes;
+        keeperInterval = 1 minutes;
         lastTimeStamp = block.timestamp;
     }
 
@@ -211,4 +211,55 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         }
     }
 
+    function getAllPolicies() public view returns (Policy[] memory) {
+        return policies;
+    }
+
+    function getAllProducts() public view returns (InsuranceProduct[] memory) {
+        return products;
+    }
+
+    function getPoliciesByInsuree(address insuree) public view returns (Policy[] memory) {
+        uint256 resultCount;
+
+        for (uint i = 0; i < policies.length; i++) {
+            if (policies[i].insuree == insuree) {
+                resultCount++;
+            }
+        }
+
+        Policy[] memory result = new Policy[](resultCount);
+        uint256 j;
+
+        for (uint i = 0; i < policies.length; i++) {
+            if (policies[i].insuree == insuree) {
+                result[j] = policies[i];
+                j++;
+            }
+        }
+
+        return result;
+    }
+
+    function getProductsByInsurer(address insurer) public view returns (InsuranceProduct[] memory) {
+        uint256 resultCount;
+
+        for (uint i = 0; i < products.length; i++) {
+            if (products[i].insurer == insurer) {
+                resultCount++;
+            }
+        }
+
+        InsuranceProduct[] memory result = new InsuranceProduct[](resultCount);
+        uint256 j;
+
+        for (uint i = 0; i < products.length; i++) {
+            if (products[i].insurer == insurer) {
+                result[j] = products[i];
+                j++;
+            }
+        }
+
+        return result;
+    }
 }
