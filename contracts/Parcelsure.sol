@@ -159,7 +159,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         Policy memory policy = Policy({
             policyId: _policyId,
             productId: productId,
-            trackingId: "UB209300714LV",
+            trackingId: trackingId,
             dateCreated: block.timestamp,
             value: value,
             insuree: payable(msg.sender),
