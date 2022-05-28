@@ -26,7 +26,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
     struct InsuranceProduct {
         uint256 productId;
         address payable insurer;
-        uint256 dailyDelayPayout;
+        uint256 dailyDelayPayoutPercentage;
         uint256 availCapital;
         uint128 premiumPercentage;
         uint128 maxDelayDays;
@@ -54,6 +54,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
     address private immutable _oracle;
     bytes32 private immutable _jobId;
     uint256 private immutable _fee;
+    mapping(bytes32 => uint256) requestToPolicyId;
 
     uint256 public immutable keeperInterval;
     uint256 public lastTimeStamp;
@@ -81,7 +82,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         _fee = 0;
         setChainlinkToken(0x01BE23585060835E02B77ef475b0Cc51aA1e0709);
 
-        keeperInterval = 24 hours;
+        keeperInterval = 3 minutes;
         lastTimeStamp = block.timestamp;
     }
 
@@ -102,10 +103,36 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         uint256 avgTime
     ) public recordChainlinkFulfillment(requestId) {
         emit ReqFulfilled(requestId, deliveryStatus, transitTime, avgTime);
+
+        uint256 policyId = requestToPolicyId[requestId];
+        Policy storage pol = policies[policyId];
+
+        uint256 prodId = pol.productId;
+        InsuranceProduct storage prod = products[prodId];
+
+        //If delivery is completed close policy
+        if (deliveryStatus == 1) {
+            pol.state = PolicyState.INACTIVE;
+            return;
+        }
+
+        if (transitTime > avgTime) {
+            uint256 daysDelayed = transitTime - avgTime;
+            if (daysDelayed > prod.maxDelayDays) {
+                pol.state = PolicyState.INACTIVE;
+                return;
+            }
+
+            //Send insurance payout
+            uint256 payout = (pol.value * prod.dailyDelayPayoutPercentage) / 100;
+            prod.availCapital -= payout;
+            pol.insuree.transfer(payout);
+        }
+
     }
 
     function createProduct(
-        uint256 dailyDelayPayout,
+        uint256 dailyDelayPayoutPercentage,
         uint128 premiumPercentage,
         uint128 maxDelayDays
     ) public payable {
@@ -115,7 +142,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         InsuranceProduct memory product = InsuranceProduct({
             productId: _productId,
             insurer: payable(msg.sender),
-            dailyDelayPayout: dailyDelayPayout,
+            dailyDelayPayoutPercentage: dailyDelayPayoutPercentage,
             availCapital: msg.value,
             premiumPercentage: premiumPercentage,
             maxDelayDays: maxDelayDays
@@ -132,7 +159,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         Policy memory policy = Policy({
             policyId: _policyId,
             productId: productId,
-            trackingId: trackingId,
+            trackingId: "UB209300714LV",
             dateCreated: block.timestamp,
             value: value,
             insuree: payable(msg.sender),
@@ -141,7 +168,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         });
         InsuranceProduct memory product = products[policy.productId];
 
-        uint256 premium = policy.value * product.premiumPercentage;
+        uint256 premium = (policy.value * product.premiumPercentage) /100;
         if (premium <= 0) {
             revert Parcelsure__PremiumNeedsToBeMoreThanZero();
         }
@@ -164,8 +191,9 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
 
     function performUpkeep(bytes calldata /* performData */) external override {
         // End iteration cycle
-        if ((block.timestamp - lastTimeStamp) > keeperInterval && keeperPolicyIndex == (policies.length - 1)) {
+        if ((block.timestamp - lastTimeStamp) > keeperInterval && keeperPolicyIndex == (policies.length)) {
             lastTimeStamp = block.timestamp;
+            keeperPolicyIndex = 0;
             return;
         }
 
@@ -177,7 +205,9 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
                 keeperPolicyIndex = policies.length - 1;
             }
             if (policies[i].state == PolicyState.INACTIVE) continue;
-            requestTrackingData(policies[i].trackingId);
+            bytes32 reqId = requestTrackingData(policies[i].trackingId);
+            requestToPolicyId[reqId] = i;
+
             keeperPolicyIndex = i+1;
             break;
         }
