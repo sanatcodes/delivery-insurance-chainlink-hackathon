@@ -13,12 +13,12 @@ However, no one offers payouts on delays, we want to give SME the same level of 
 they might not be able to deliver as promptly as Amazon, consumers do have the garuntee that they would be componsated for delays.
 
 ## Tools we have used 
-- Chainlink
+- Chainlink API calls / external adapter
+- Chainlink Keepers
 - Solidity
-- IPFS
 - Hardhat 
 - Svelte 
-- Polygon
+
 
 ### Testing Dependancy
 - In order to locally test our parcel [trackingAPI](https://github.com/sanatcodes/mockAPItestingMore/tree/improving_api) we mocked it using [Varcel](varcel.com)
