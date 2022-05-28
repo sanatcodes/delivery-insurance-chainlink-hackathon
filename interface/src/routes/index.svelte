@@ -122,12 +122,6 @@ import {
 </div>
 <div class="tool_pictures">
     <li>
-        <img src={polygonLogo}/>  
-    </li>
-    <li>
-        <img src={ipfsLogo}/>    
-    </li>
-    <li>
         <img src={clLogo}/>  
     </li>
     <li>
@@ -136,5 +130,6 @@ import {
     <li>
         <img src={hadhatLogo}/>  
     </li>
-</div> 
+</div>
+<br>
 
