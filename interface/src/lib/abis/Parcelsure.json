@@ -209,6 +209,208 @@
     },
     {
       "inputs": [],
+      "name": "getAllPolicies",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "policyId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "productId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "trackingId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "dateCreated",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "insuree",
+              "type": "address"
+            },
+            {
+              "internalType": "enum Parcelsure.PolicyState",
+              "name": "state",
+              "type": "uint8"
+            }
+          ],
+          "internalType": "struct Parcelsure.Policy[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllProducts",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "productId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "insurer",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "dailyDelayPayoutPercentage",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "availCapital",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint128",
+              "name": "premiumPercentage",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "maxDelayDays",
+              "type": "uint128"
+            }
+          ],
+          "internalType": "struct Parcelsure.InsuranceProduct[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "insuree",
+          "type": "address"
+        }
+      ],
+      "name": "getPoliciesByInsuree",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "policyId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "productId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "trackingId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "dateCreated",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "insuree",
+              "type": "address"
+            },
+            {
+              "internalType": "enum Parcelsure.PolicyState",
+              "name": "state",
+              "type": "uint8"
+            }
+          ],
+          "internalType": "struct Parcelsure.Policy[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "insurer",
+          "type": "address"
+        }
+      ],
+      "name": "getProductsByInsurer",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "productId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "insurer",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "dailyDelayPayoutPercentage",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "availCapital",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint128",
+              "name": "premiumPercentage",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "maxDelayDays",
+              "type": "uint128"
+            }
+          ],
+          "internalType": "struct Parcelsure.InsuranceProduct[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "keeperInterval",
       "outputs": [
         {
@@ -390,4 +592,4 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ]
+]

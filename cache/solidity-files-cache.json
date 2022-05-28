@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\kaimo\\Desktop\\dev\\blockchain\\eth\\hackathons\\cl-spring-22\\parcelsure\\contracts\\Parcelsure.sol": {
-      "lastModificationDate": 1653698466112,
-      "contentHash": "e2efbb9df623817b7b13ce6a14e837b8",
+      "lastModificationDate": 1653699639966,
+      "contentHash": "ddf4d6e7e9c03d52e49340f194413630",
       "sourceName": "contracts/Parcelsure.sol",
       "solcConfig": {
         "version": "0.8.7",
