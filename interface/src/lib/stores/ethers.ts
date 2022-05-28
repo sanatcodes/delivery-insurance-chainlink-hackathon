@@ -9,7 +9,7 @@ export const provider = derived(account, ($account) => {
 	}
 })
 export const Parcelsure = derived(provider, $provider => {
-    if (!$provider) return null;         
+    if (!$provider) return;       
     const signer = $provider.getSigner();
     return new ethers.Contract("0x3CC9f9674dC07407AEcb0Eb07903620Cc5FE83C8", contractAbi, signer)
 })
