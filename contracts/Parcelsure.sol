@@ -124,7 +124,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
             }
 
             //Send insurance payout
-            uint256 payout = (pol.value * prod.dailyDelayPayoutPercentage) / 100;
+            uint256 payout = (pol.value * prod.dailyDelayPayoutPercentage) / 10000;
             prod.availCapital -= payout;
             pol.insuree.transfer(payout);
         }
@@ -168,7 +168,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
         });
         InsuranceProduct memory product = products[policy.productId];
 
-        uint256 premium = (policy.value * product.premiumPercentage) /100;
+        uint256 premium = (policy.value * product.premiumPercentage) / 10000;
         if (premium <= 0) {
             revert Parcelsure__PremiumNeedsToBeMoreThanZero();
         }
