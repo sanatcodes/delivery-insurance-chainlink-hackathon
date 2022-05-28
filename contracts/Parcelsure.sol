@@ -53,7 +53,7 @@ contract Parcelsure is ChainlinkClient, KeeperCompatibleInterface {
     address private immutable _oracle;
     bytes32 private immutable _jobId;
     uint256 private immutable _fee;
-    mapping(bytes32 => uint256) requestToPolicyId;
+    mapping(bytes32 => uint256) public requestToPolicyId;
 
     uint256 public immutable keeperInterval;
     uint256 public lastTimeStamp;
